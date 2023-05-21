@@ -1,41 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { UserContext } from './contexts/userContext';
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
 
 import LandingPage from './pages/LandingPage';
 import SignupPage from './pages/SignupPage';
 import SigninPage from './pages/SigninPage';
 import NotFoundPage from './pages/NotFoundPage';
+import AppPage from './pages/AppPage';
+
+import PrivateRoutes from './utils/privateRoutes';
+import PublicRoutes from './utils/publicRoutes';
 
 function App() {
   const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      setUser(user);
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Router>
         <Routes>
-          <Route
-            path="/"
-            element={user ? <LandingPage /> : <Navigate to="/signin" replace />}
-          />
-          <Route path="/signin" element={user ? <Navigate to="/" replace /> : <SigninPage />} />
-          <Route path="/signup" element={user ? <Navigate to="/" replace /> : <SignupPage />} />
+          <Route element={<PrivateRoutes />}>
+              <Route element={<AppPage />} path='/app' exact />
+          </Route>
+          <Route element={<PublicRoutes />}>
+              <Route element={<SigninPage />} path='/signin' exact />
+              <Route element={<SignupPage />} path='/signup' exact />
+              <Route element={<LandingPage />} path='/' exact />
+          </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
-    </UserContext.Provider>
+     </UserContext.Provider>
   );
 }
 
