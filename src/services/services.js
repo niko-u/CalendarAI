@@ -1,4 +1,7 @@
 import { auth } from '../config/firebase';
+import { endpoints } from '../constants/urls';
+import { httpClient } from './httpClient';
+import '../App.css'
 
 export const handleSignin = async (email, password) => {
     try {
@@ -28,20 +31,30 @@ export const handleSignup = async (email, password) => {
     }
   };
 
-  export const handleSignout = async () => {
-    try {
-      await auth.signOut();
-      console.log('User logged out successfully');
-      return null; // Return null or an empty value if needed
-    } catch (error) {
-      console.error('Error logging out:', error);
-      throw error; // Throw the error to handle it in the calling code
-    }
-  };
+export const handleSignout = async () => {
+  try {
+    await auth.signOut();
+    console.log('User logged out successfully');
+    return null; // Return null or an empty value if needed
+  } catch (error) {
+    console.error('Error logging out:', error);
+    throw error; // Throw the error to handle it in the calling code
+  }
+};
+
+export const handlePDFSend = async (file, prompt) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('prompt', prompt)
+  const response = await httpClient.post(endpoints.pdfgpt.askFile, formData);
+  console.log(response.data);
+  return response.data;
+}
 
 export const services = {
     handleSignin,
     handleSignup,
-    handleSignout
+    handleSignout,
+    handlePDFSend
 }
   

@@ -7,6 +7,8 @@ import SignupPage from './pages/SignupPage';
 import SigninPage from './pages/SigninPage';
 import NotFoundPage from './pages/NotFoundPage';
 import AppPage from './pages/AppPage';
+import ProcessingPage from './pages/ProcessingPage';
+import EventPage from './pages/EventPage';
 
 import PrivateRoutes from './utils/privateRoutes';
 import PublicRoutes from './utils/publicRoutes';
@@ -20,6 +22,8 @@ function App() {
         <Routes>
           <Route element={<PrivateRoutes />}>
               <Route element={<AppPage />} path='/app' exact />
+              <Route element={<ProcessingPage />} path='/processing' exact />
+              <Route element={<EventPage />} path='/events' exact />
           </Route>
           <Route element={<PublicRoutes />}>
               <Route element={<SigninPage />} path='/signin' exact />
