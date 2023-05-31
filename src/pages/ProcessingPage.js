@@ -36,8 +36,20 @@ const ProcessingPage = () => {
     };
   }, []);
 
-  const processFiles = async () => {
+  useEffect(() => {
+    if (responses.length === selectedFiles.length) {
+      console.log(responses.length, selectedFiles.length, responses)
+      // Redirect to the next page with the responses
+      navigate('/events', {
+        state: {
+          responses: responses,
+        },
+      });
+    }
+  }, [responses, selectedFiles.length, navigate]);
 
+
+  const processFiles = async () => {
     for (let i = 0; i < selectedFiles.length; i++) {
       const file = selectedFiles[i];
       setCurrentFile(file.name);
@@ -46,7 +58,6 @@ const ProcessingPage = () => {
         // Process the file here
         const prompt = "Find all important dates and their titles";
         const response = await handlePDFSend(file, prompt);
-
         // Store the response in the array
         setResponses((prevResponses) => [...prevResponses, response]);
         // Perform further processing or display of the response data
@@ -60,7 +71,11 @@ const ProcessingPage = () => {
     }
 
     // Redirect to the next page with the responses
-    navigate('/events', { responses });
+    // navigate('/events', {
+    //     state: {
+    //        responses: responses
+    //     } 
+    //    });
   };
 
   const progress = (currentIndex / selectedFiles.length) * 100;
