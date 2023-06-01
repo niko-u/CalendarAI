@@ -42,10 +42,10 @@ export const handleSignout = async () => {
   }
 };
 
-export const handlePDFSend = async (file, prompt) => {
+export const handlePDFSend = async (file, PDFName) => {
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('prompt', prompt)
+  formData.append('PDFName', PDFName)
   const response = await httpClient.post(endpoints.pdfgpt.askFile, formData);
   console.log(response.data);
   return response.data;

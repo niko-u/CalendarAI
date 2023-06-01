@@ -4,6 +4,8 @@ import backgroundImage from '../media/nn2.gif';
 import Logo from '../media/logo2.png';
 import { handlePDFSend } from '../services/services';
 import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 function AppPage() {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -143,7 +145,7 @@ const processAllFiles = async () => {
                     className="bg-red-500 text-white px-3 py-2 rounded-lg mt-2 opacity-50 mr-2 hover:scale-105 transition-all ease-out duration-200"
                     onClick={() => handleRemoveFile(index)}
                   >
-                    {file.name}
+                    <FontAwesomeIcon icon="fa-solid fa-circle-xmark" className='mr-1' /> {file.name}
                   </button>
                 ))}
               </div>

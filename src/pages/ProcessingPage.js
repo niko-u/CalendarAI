@@ -56,8 +56,8 @@ const ProcessingPage = () => {
 
       try {
         // Process the file here
-        const prompt = "Find all important dates and their titles";
-        const response = await handlePDFSend(file, prompt);
+        //const prompt = "Find all important dates and their titles";
+        const response = await handlePDFSend(file, file.name.toString());
         // Store the response in the array
         setResponses((prevResponses) => [...prevResponses, response]);
         // Perform further processing or display of the response data
@@ -69,13 +69,6 @@ const ProcessingPage = () => {
       setCurrentIndex(i + 1);
       setCurrentFile(null);
     }
-
-    // Redirect to the next page with the responses
-    // navigate('/events', {
-    //     state: {
-    //        responses: responses
-    //     } 
-    //    });
   };
 
   const progress = (currentIndex / selectedFiles.length) * 100;
