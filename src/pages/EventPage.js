@@ -156,17 +156,23 @@ const handleUndo = () => {
   
 
   const handleAddToCalendar = () => {
-    const calendarData = parsedResponses.map((parsedResponse) => ({
-      date: parsedResponse.date,
-      event: parsedResponse.event,
-    }));
+    //const calendarData = parsedResponses.map((parsedResponse) => ({
+    //   date: parsedResponse.date,
+    //   event: parsedResponse.event,
+    // }));
   
-    const jsonData = JSON.stringify(calendarData);
-    console.log(jsonData);
+    // const jsonData = JSON.stringify(calendarData);
+    // console.log(jsonData)
+
+    navigate('/output', {
+        state: {
+          eventData: parsedResponses,
+          eventNames: classNames
+        },
+      });
   };
 
-  console.log(parsedResponses)
-  console.log(classNames)
+
   
 
   return (
@@ -187,12 +193,12 @@ const handleUndo = () => {
             <div className="flex justify-between items-center mb-4">
               <button onClick={handleUndo} className="bg-red-500 bg-opacity-60 hover:bg-red-600 hover:bg-opacity-60 text-white font-medium py-1 px-3 rounded-lg focus:outline-none hover:scale-105 transition-all ease-out duration-200">Undo</button>
 
-              <div className="flex items-center justify-center w-auto">
+              <div className="flex items-center justify-center w-auto text-center">
                 <input
                     type="text"
                     value={classNames[currentIndex]?.className || ''}
                     onChange={(e) => {}}
-                    className="bg-red-500 bg-opacity-60 text-white p-4 rounded-xl text-center w-full"
+                    className="bg-red-500 bg-opacity-60 text-white p-4 rounded-xl text-center w-full text-center"
                 />
             </div>
 

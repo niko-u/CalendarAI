@@ -9,6 +9,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import AppPage from './pages/AppPage';
 import ProcessingPage from './pages/ProcessingPage';
 import EventPage from './pages/EventPage';
+import OutputPage from './pages/OutputPage';
 
 import PrivateRoutes from './utils/privateRoutes';
 import PublicRoutes from './utils/publicRoutes';
@@ -24,6 +25,7 @@ function App() {
               <Route element={<AppPage />} path='/app' exact />
               <Route element={<ProcessingPage />} path='/processing' exact />
               <Route element={<EventPage />} path='/events' exact />
+              <Route element={<OutputPage />} path='/output' exact />
           </Route>
           <Route element={<PublicRoutes />}>
               <Route element={<SigninPage />} path='/signin' exact />
