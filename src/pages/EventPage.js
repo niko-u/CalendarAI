@@ -62,6 +62,7 @@ const EventPage = () => {
             const response = responses[i][j];
             const parsedResponse = {
                 date: response.date,
+                time: response.time,
                 event: response.event,
             };
             currResponses.push(parsedResponse);
@@ -156,21 +157,18 @@ const handleUndo = () => {
   
 
   const handleAddToCalendar = () => {
-    //const calendarData = parsedResponses.map((parsedResponse) => ({
-    //   date: parsedResponse.date,
-    //   event: parsedResponse.event,
-    // }));
+    const filteredResponses = parsedResponses.map((parsedResponse) =>
+      parsedResponse.filter((response) => response.date && response.time && response.event)
+    );
   
-    // const jsonData = JSON.stringify(calendarData);
-    // console.log(jsonData)
-
     navigate('/output', {
-        state: {
-          eventData: parsedResponses,
-          eventNames: classNames
-        },
-      });
+      state: {
+        eventData: filteredResponses,
+        eventNames: classNames,
+      },
+    });
   };
+  
 
 
   
@@ -213,6 +211,7 @@ const handleUndo = () => {
                   <thead className="sticky top-0 bg-red-500 bg-opacity-50">
                     <tr>
                       <th className="py-2 px-4 text-gray-100 font-medium w-[20%]">Date</th>
+                      <th className="py-2 px-4 text-gray-100 font-medium w-[20%]">Time</th>
                       <th className="py-2 px-4 text-gray-100 font-medium">Event</th>
                       <th className="py-2 px-4 text-gray-100 font-medium">Actions</th>
                     </tr>
@@ -229,6 +228,14 @@ const handleUndo = () => {
                             type="text"
                             value={parsedResponse.date}
                             onChange={(e) => handleInputChange(e, index, 'date')}
+                            className="bg-transparent w-full outline-none text-gray-100 mt-1 mb-1 focus:ring-1 focus:ring-red-500 focus:text-red-500 focus:text-opacity-70 focus:ring-offset-opacity-50"
+                        />
+                        </td>
+                        <td className="py-2 px-4 w-[20%]">
+                        <input
+                            type="text"
+                            value={parsedResponse.time}
+                            onChange={(e) => handleInputChange(e, index, 'time')}
                             className="bg-transparent w-full outline-none text-gray-100 mt-1 mb-1 focus:ring-1 focus:ring-red-500 focus:text-red-500 focus:text-opacity-70 focus:ring-offset-opacity-50"
                         />
                         </td>

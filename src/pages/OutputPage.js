@@ -6,43 +6,39 @@ import { useLocation } from 'react-router-dom';
 
 const OutputPage = () => {
   const location = useLocation();
-  const eventData = location.state.eventData || [];
+  const data = location.state.eventData || [];
 
   useEffect(() => {
     // Sample JSON data
-    const jsonData = eventData[0];
 
     // Create an empty .ics file
-    let icsFileContent = `BEGIN:VCALENDAR
-    VERSION:2.0
-    CALSCALE:GREGORIAN
-    METHOD:PUBLISH
-    `;
+    // let icsFileContent = `BEGIN:VCALENDAR
+    // VERSION:2.0
+    // CALSCALE:GREGORIAN
+    // METHOD:PUBLISH
+    // `;
+    let icsFileContent = `BEGIN:VCALENDAR\r\nVERSION:2.0\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\nPRODID:CALENDARAI//EN\r\n`;
+
+
+    console.log("class data: ", data)
 
     // Iterate through each object in the JSON data
-    jsonData.forEach((event) => {
-      const { date, event: description } = event;
-      const formattedDate = new Date(date).toISOString().replace(/[-:.]/g, '');
-        const formattedDateTime = formattedDate.substring(0, 15) + '0000';
+    data.forEach((classData) => {
+        classData.forEach((event) => {
+            const { date, time, event: description } = event;
+            const formattedDateTime = new Date(`${date}T${time}`).toISOString().replace(/[-:.Z]/g, "").substring(0, 15);
+            const dstamp = new Date(`${date}T00:00:00`).toISOString().replace(/[-:.Z]/g, "").substring(0, 15);            
+            console.log(formattedDateTime)
+            // Format the event details
+            const eventContent = `BEGIN:VEVENT\r\nUID:${description}\r\nDTSTAMP:${dstamp}\r\nSUMMARY:${description}\r\nDTSTART:${formattedDateTime}\r\nDTEND:${formattedDateTime}\r\nEND:VEVENT\r\n`;
 
-      // Format the date in the required format (YYYYMMDD)
-    //   const formattedDate = new Date(date)
-    //     .toISOString()
-    //     .replace(/[-:.]/g, '')
-    //     .split('T')[0];
+            // Add the event details to the .ics file
+            icsFileContent += eventContent
 
-      // Format the event details
-      const eventContent = `BEGIN:VEVENT
-      UID:${formattedDateTime}@your-website.com
-      DTSTAMP:${formattedDateTime}
-      SUMMARY:${description}
-      DTSTART;VALUE=DATE:${formattedDate}
-      DTEND;VALUE=DATE:${formattedDate}
-      END:VEVENT
-      `;
+        })
+      
 
-      // Add the event details to the .ics file
-      icsFileContent += eventContent;
+
     });
 
     // Add closing statements to the .ics file
@@ -66,7 +62,7 @@ const OutputPage = () => {
     };
 
     downloadICS();
-  }, [eventData]);
+  }, [data]);
 
   return (
     <Layout>
