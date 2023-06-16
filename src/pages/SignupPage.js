@@ -16,27 +16,24 @@ function SignupPage() {
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const confirmPasswordMatch = () => {
-    if (password === confirmPassword) {
-        handleSignupClick()
-    } else{
-        console.log("Password mismatch")
-    }
-  }
-
   const handleSignupClick = async (e) => {
     e.preventDefault();
-    await services.handleSignup(email, password)
-      .then((user) => {
+    try {
+      // e.preventDefault();
+      if (password === confirmPassword) {
+        const user = await services.handleSignup(email, password);
         // Handle successful signup
         setUser(user);
         navigate('/app');
-      })
-      .catch((error) => {
-        // Handle signup error
-        console.log('Signup error:', error);
-      });
+      } else {
+        console.log("Password mismatch");
+      }
+    } catch (error) {
+      // Handle signup error
+      console.log('Signup error:', error);
+    }
   };
+  
 
   return (
     <Layout>
@@ -73,7 +70,7 @@ function SignupPage() {
                 type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password" />
               </div>
               <div className="mt-8 flex justify-center text-lg text-black">
-                <button type="submit" onClick={confirmPasswordMatch} className="rounded-3xl bg-red-500 bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-red-600 hover:bg-opacity-50">Sign Up</button>
+                <button type="submit" onClick={handleSignupClick} className="rounded-3xl bg-red-500 bg-opacity-50 px-10 py-2 text-white shadow-xl backdrop-blur-md transition-colors duration-300 hover:bg-red-600 hover:bg-opacity-50">Sign Up</button>
               </div>
             </form>
           </div>
